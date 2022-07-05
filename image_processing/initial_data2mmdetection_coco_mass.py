@@ -141,12 +141,12 @@ if __name__ == '__main__':
     # read_img_path = Path('D:\SourcetreeSpace\Python_function\image_processing')
     # save_img_path = Path('./')
     # collect(read_json_path,read_img_path,save_img_path)
-    save_train_json_path = ''
-    save_val_json_path = ''
-    path = ''
-    save_train_img_path = ''
-    save_val_img_path = ''
-    judge_path = ''
+    save_train_json_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/annotations/train_coco.json'
+    save_val_json_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/annotations/val_coco.json'
+    path = '/home/extend/datasets/cbis-ddsm_all/all'
+    save_train_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/train_image'
+    save_val_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/val_image'
+    judge_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass_calc/train_image'
     init_save_json(save_train_json_path)
     init_save_json(save_val_json_path)
     data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
