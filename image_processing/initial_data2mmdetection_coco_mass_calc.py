@@ -5,6 +5,7 @@ import shutil
 from pathlib import Path
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 
 img_id = 0
 ann_id = 0
@@ -32,10 +33,10 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
     image = {}
     annotation = []
     # img_path = str(read_img_path.joinpath('.',read_json_data['filename']+'.png'))
-    img_path = os.path.join(read_img_path,read_json_data['filename']+'.png')
-    img = cv2.imread(img_path, cv2.IMREAD_ANYDEPTH)
+    # img_path = os.path.join(read_img_path,read_json_data['filename']+'.png')
+    img = cv2.imread(read_img_path, cv2.IMREAD_ANYDEPTH)
     img_shape = img.shape
-    shutil.copy(img_path,save_img_path)
+    shutil.copy(read_img_path,save_img_path)
     image = {
         'file_name': read_json_data['filename']+'.png',
         'height': img_shape[0],
@@ -95,7 +96,7 @@ def data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,s
         print("File not exist")
         return False
     dir_list = os.listdir(path)
-    for dir in dir_list:
+    for dir in tqdm(dir_list):
         dir_path = os.path.join(path, dir)
         if os.path.isdir(dir_path):
             file_list = os.listdir(dir_path)
@@ -127,17 +128,42 @@ def data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,s
             json.dump(save_json_data, f, cls=NpEncoder)
 
 
+
+
+def save_categories(json_path):
+    with open(json_path,'r') as save_json:
+        json_data = json.load(save_json)
+        json_data['categories'] = [
+            {
+                'id': 0,
+                'name': 'mass'
+            },
+            {
+                'id': 1,
+                'name': 'calc'
+            }
+        ]
+        with open(json_path,'w') as f:
+            json.dump(json_data, f, cls=NpEncoder)
+
+
+
 if __name__ == '__main__':
     # read_json_path = Path('./P_00001_L_CC.json')
     # read_img_path = Path('D:\SourcetreeSpace\Python_function\image_processing')
     # save_img_path = Path('./')
     # collect(read_json_path,read_img_path,save_img_path)
-    save_train_json_path = ''
-    save_val_json_path = ''
-    path = ''
-    save_train_img_path = ''
-    save_val_img_path = ''
-    judge_path = ''
-    init_save_json(save_train_json_path)
-    init_save_json(save_val_json_path)
-    data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
+
+
+    save_train_json_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco/annotations/train_coco.json'
+    save_val_json_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco/annotations/val_coco.json'
+    # path = '/home/extend/datasets/cbis-ddsm_all/all'
+    # save_train_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco/train_image'
+    # save_val_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco/val_image'
+    # judge_path = '/home/extend2/datasets/ly_cbis_ddsm_yolov5_json_original_calc_mass/images/train'
+    # init_save_json(save_train_json_path)
+    # init_save_json(save_val_json_path)
+    # data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
+
+    save_categories(save_train_json_path)
+    save_categories(save_val_json_path)
