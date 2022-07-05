@@ -26,7 +26,7 @@ def create_txt(json_path, image_path, text_path, save_img_path):
     image = cv2.imread(image_path, cv2.IMREAD_ANYDEPTH)
     img_shape = image.shape  # image.shape -> (h,w)
     img_save_path = os.path.join(save_img_path, image_path.split('/')[-1])
-    cv2.imwrite(img_save_path,image)  # 图片保存在对应位置
+    # cv2.imwrite(img_save_path,image)  # 图片保存在对应位置
     roi_list = list(data['ROI'])
     text_file = img_name + '.txt'
     # with open(os.path.join(text_path, text_file), 'w') as file:
@@ -35,10 +35,10 @@ def create_txt(json_path, image_path, text_path, save_img_path):
         if item['lesion_type'] != 'mass':
             continue
         box = item['bbox']  # [[x,y][w,h]]
-        center_x = box[0][0] / img_shape[1]
-        center_y = box[0][1] / img_shape[0]
-        width = box[1][0] / img_shape[1]
-        height = box[1][1] / img_shape[0]
+        center_x = '{:.6f}'.format(box[0][0] / img_shape[1])
+        center_y = '{:.6f}'.format(box[0][1] / img_shape[0])
+        width = '{:.6f}'.format(box[1][0] / img_shape[1])
+        height = '{:.6f}'.format(box[1][1] / img_shape[0])
 
         if item['lesion_type'] == "mass":
             gt_classes = '0'
@@ -49,16 +49,17 @@ def create_txt(json_path, image_path, text_path, save_img_path):
         # lines += gt_classes + ' ' + center_x + ' ' + center_y + ' ' + width + ' ' + height + ' ' + pathology + '\n'
         lines += gt_classes + ' ' + center_x + ' ' + center_y + ' ' + width + ' ' + height + '\n'
     if lines:
+        cv2.imwrite(img_save_path, image)  # 图片保存在对应位置
         with open(os.path.join(text_path, text_file), 'w') as file:
             file.write(lines)
     # print(data)
 
 
 def iterate_file(path, judge_path):
-    text_train_path = '/home/extend2/datasets/ly_cbis_ddsm_yolov5_json_original_calc_mass/labels/train'
-    text_val_path = ''
-    save_train_img_path = '/home/extend2/datasets/ly_cbis_ddsm_yolov5_json_original_calc_mass/images/train'
-    save_val_img_path = ''
+    text_train_path = '/home/extend/datasets/cbis-ddsm_yolov5_mass/lables/train'
+    text_val_path = '/home/extend/datasets/cbis-ddsm_yolov5_mass/lables/val'
+    save_train_img_path = '/home/extend/datasets/cbis-ddsm_yolov5_mass/images/train'
+    save_val_img_path = '/home/extend/datasets/cbis-ddsm_yolov5_mass/images/val'
     if not os.path.exists(path):
         print("File not exist")
         return False
@@ -86,6 +87,6 @@ if __name__ == "__main__":
     # image_path = r"D:\SourcetreeSpace\Python_function\image_processing"
     # text_path = r'D:\SourcetreeSpace\Python_function\image_processing'
     # create_txt(json_path, image_path, text_path)
-    origin_path = ''
+    initial_path = '/home/extend2/datasets/cbis-ddsm_all/all'
     judge_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass_calc/train_image'
-    iterate_file(origin_path, judge_path)
+    iterate_file(initial_path, judge_path)
