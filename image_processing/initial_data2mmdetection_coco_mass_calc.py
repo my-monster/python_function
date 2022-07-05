@@ -147,7 +147,6 @@ def save_categories(json_path):
             json.dump(json_data, f, cls=NpEncoder)
 
 
-
 if __name__ == '__main__':
     # read_json_path = Path('./P_00001_L_CC.json')
     # read_img_path = Path('D:\SourcetreeSpace\Python_function\image_processing')
