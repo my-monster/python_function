@@ -42,6 +42,7 @@ def create_txt(json_path, image_path, text_path, save_img_path):
 
             pathology = '1' if item['pathology'] == 'MALIGNANT' else '0'
         lines += gt_classes + ' ' + center_x + ' ' + center_y + ' ' + width + ' ' + height + ' ' + pathology + '\n'
+        file.write(lines)
     print(data)
 
 
