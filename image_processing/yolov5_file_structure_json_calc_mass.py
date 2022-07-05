@@ -46,8 +46,8 @@ def create_txt(json_path, image_path, text_path, save_img_path):
 
 
 def iterate_file(path):
-    text_path = r''
-    save_img_path = r''
+    text_path = '/home/extend2/datasets/ly_cbis_ddsm_yolov5_json_original_calc_mass/labels/train'
+    save_img_path = '/home/extend2/datasets/ly_cbis_ddsm_yolov5_json_original_calc_mass/images/train'
     if not os.path.exists(path):
         print("File not exist")
         return False
@@ -64,7 +64,8 @@ def iterate_file(path):
 
 
 if __name__ == "__main__":
-    json_path = r"./P_00001_L_CC.json"
-    image_path = r"D:\SourcetreeSpace\Python_function\image_processing"
-    text_path = r'D:\SourcetreeSpace\Python_function\image_processing'
-    create_txt(json_path, image_path, text_path)
+    # json_path = r"./P_00001_L_CC.json"
+    # image_path = r"D:\SourcetreeSpace\Python_function\image_processing"
+    # text_path = r'D:\SourcetreeSpace\Python_function\image_processing'
+    # create_txt(json_path, image_path, text_path)
+    iterate_file()
