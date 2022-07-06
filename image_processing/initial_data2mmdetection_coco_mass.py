@@ -56,9 +56,10 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
         y_min = bbox[0][1] - bbox[1][1] / 2
         width = bbox[1][0]
         height = bbox[1][1]
+        area = width * height
         ann = {
             'segmentation': segmentation,
-            'area': '',
+            'area': area,
             'iscrowd': 0,
             'image_id': img_id,
             'bbox': [x_min,y_min,width,height],
@@ -144,10 +145,10 @@ def save_categories(json_path):
             {
                 'id': 0,
                 'name': 'mass'
-            },
-            {
-                'id': 1,
-                'name': 'calc'
+            # },
+            # {
+            #     'id': 1,
+            #     'name': 'calc'
             }
         ]
         with open(json_path,'w') as f:
@@ -165,6 +166,8 @@ if __name__ == '__main__':
     save_train_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/train_image'
     save_val_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/val_image'
     judge_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass_calc/train_image'
-    init_save_json(save_train_json_path)
-    init_save_json(save_val_json_path)
-    data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
+    # init_save_json(save_train_json_path)
+    # init_save_json(save_val_json_path)
+    # data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
+    save_categories(save_train_json_path)
+    save_categories(save_val_json_path)
