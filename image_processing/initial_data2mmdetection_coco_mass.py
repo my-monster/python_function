@@ -10,6 +10,10 @@ from tqdm import tqdm
 img_id = 0
 ann_id = 0
 
+line_color = [(0, 255, 0), (255, 0, 0), (255, 0, 255), (255, 255, 0),
+              (255, 255, 255), (0, 0, 255), (205, 92, 92), (238, 121, 66),
+              (153, 50, 204), (238, 58, 140), (202, 255, 112), (65, 105, 225)]
+
 func = lambda x: [y for l in x for y in func(l)] if type(x) is list else [x]
 
 
@@ -36,6 +40,7 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
     # img_path = os.path.join(read_img_path,read_json_data['filename']+'.png')
     img = cv2.imread(read_img_path, cv2.IMREAD_ANYDEPTH)
     img_shape = img.shape
+    img_look = image.copy()
     # shutil.copy(img_path,save_img_path)
     image = {
         'file_name': read_json_data['filename']+'.png',
@@ -56,6 +61,28 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
         y_min = bbox[0][1] - bbox[1][1] / 2
         width = bbox[1][0]
         height = bbox[1][1]
+        x_max = x_min + width
+        y_max = y_min + height
+
+        # 标签可视化
+        c1, c2 = (int(x_min), int(y_min)), (int(x_max), int(y_max))
+        color = line_color[0]
+        cv2.rectangle(img_look, c1, c2, color, thickness=2)
+        # label
+        tl = 1
+        tf = 2  # font thickness
+        i = 4
+
+        if roi['lesion_type'] != 'mass':
+            text = 'mass' + ' ' + roi['pathology']
+        else:
+            text = 'calc' + ' ' + roi['pathology']
+
+        t_size = cv2.getTextSize(text, 0, fontScale=tl, thickness=tf)[0]
+        cv2.putText(img_look, text, (c1[0], c1[1] - 2 - (i - 4) * t_size[1]), 0, tl, [225, 255, 255],
+                    thickness=tf,
+                    lineType=cv2.LINE_AA)
+
         area = width * height
         ann = {
             'segmentation': segmentation,
@@ -71,6 +98,7 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
         ann_id = ann_id + 1
     img_id = img_id + 1
 
+    output_image_patch_look_path = os.path.join(save_img_path+'_look', read_json_data['filename']+'.png')
     # print(annotation)
     # print(x_min)
     # print(ann_id)
@@ -79,6 +107,7 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
     if not annotation:
         return {}, []
     else:
+        cv2.imwrite(output_image_patch_look_path, img_look)
         shutil.copy(read_img_path, save_img_path)
         return image, annotation
 
