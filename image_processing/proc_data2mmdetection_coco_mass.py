@@ -40,7 +40,7 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
     # img_path = os.path.join(read_img_path,read_json_data['filename']+'.png')
     img = cv2.imread(read_img_path, cv2.IMREAD_ANYDEPTH)
     img_shape = img.shape
-    img_look = image.copy()
+    img_look = img.copy()
     # shutil.copy(img_path,save_img_path)
     image = {
         'file_name': read_json_data['filename']+'.png',
@@ -125,7 +125,7 @@ def init_save_json(save_json_path):
 def data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path):
     # with open(save_json_path, 'r') as save_json:
     #     save_json_data = json.load(save_json)
-    proc_img_path = ''
+    proc_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass_calc'
     train_image = []
     train_annotation = []
     val_image = []
@@ -199,8 +199,8 @@ if __name__ == '__main__':
     save_train_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/train_image'
     save_val_img_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass/val_image'
     judge_path = '/home/extend/datasets/cbis-ddsm_mmdetection_coco_mass_calc/train_image'
-    # init_save_json(save_train_json_path)
-    # init_save_json(save_val_json_path)
-    # data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
+    init_save_json(save_train_json_path)
+    init_save_json(save_val_json_path)
+    data2coco(save_train_json_path,save_val_json_path,path,save_train_img_path,save_val_img_path,judge_path)
     save_categories(save_train_json_path)
     save_categories(save_val_json_path)
