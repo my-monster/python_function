@@ -73,7 +73,7 @@ def collect_image_annotation(read_json_path,read_img_path,save_img_path):
         tf = 2  # font thickness
         i = 4
 
-        if roi['lesion_type'] != 'mass':
+        if roi['lesion_type'] == 'mass':
             text = 'mass' + ' ' + roi['pathology']
         else:
             text = 'calc' + ' ' + roi['pathology']
